@@ -38,6 +38,7 @@ SYSTEM_PROMPT = (
     "Format otveta:\n"
     "<KBJU>kalorii,belki,zhiry,uglevody,opisanie edy</KBJU>\n\n"
     "Primer: <KBJU>350,25,8,40,ovsyanka 200g s bananom</KBJU>\n\n"
-    "Posle tega napishi kratkiy druzhelyubny otvet s ostatkom na den."
-)
+    "Posle tega napishi kratkiy druzhelyubny otvet s ostatkom na app.run_polling(drop_pending_updates=True)
+app.run_polling(drop_pending_updates=True)
+
 
