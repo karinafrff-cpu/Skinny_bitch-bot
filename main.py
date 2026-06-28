@@ -70,4 +70,5 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         full_text = text
         if search_context:
-            full_text += f"\n\n[Дан​​​​​​​​​​​​​​​​
+            full_text += "\n\n[Dannye iz interneta: " + search_context + "]"
+
