@@ -1,4 +1,6 @@
 google-genai
+google-auth
+google-api-python-client
 python-telegram-bot
 requests
 Pillow
