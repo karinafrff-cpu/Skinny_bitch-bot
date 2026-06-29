@@ -10,41 +10,41 @@ from googleapiclient.discovery import build
 from PIL import Image
 import io
 
-TELEGRAM_TOKEN = os.environ[“TELEGRAM_TOKEN”]
-GEMINI_KEY = os.environ[“GEMINI_KEY”]
-TAVILY_KEY = os.environ[“TAVILY_KEY”]
-GOOGLE_CREDENTIALS = os.environ[“GOOGLE_CREDENTIALS”]
-SPREADSHEET_ID = “10OPWVG5zM8M0KllDrJ-EJbwh7U08gqCwk5p-A8UE4V0”
+TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
+GEMINI_KEY = os.environ["GEMINI_KEY"]
+TAVILY_KEY = os.environ["TAVILY_KEY"]
+GOOGLE_CREDENTIALS = os.environ["GOOGLE_CREDENTIALS"]
+SPREADSHEET_ID = "10OPWVG5zM8M0KllDrJ-EJbwh7U08gqCwk5p-A8UE4V0"
 
 DAILY_CALORIES = 1500
 DAILY_PROTEIN = 100
 DAILY_FAT = 50
 DAILY_CARBS = 150
 
-client = genai.Client(api_key=“test”)
+client = genai.Client(api_key="test")
 
 SYSTEM_PROMPT = (
-“You are a friendly nutrition diary assistant. “
-“Always respond in Russian language only. “
-“Daily norm: 1500 kcal, protein 100g, fat 50g, carbs 150g. “
-“When user describes food or sends photo, calculate nutrition. “
-“Always include this tag in response: “
-“<KBJU>calories,protein,fat,carbs,food description</KBJU> “
-“Example: <KBJU>200,6,4,35,oatmeal 200g</KBJU> “
-“After the tag write a short friendly message in Russian with remaining daily budget.”
+"You are a friendly nutrition diary assistant. "
+"Always respond in Russian language only. "
+"Daily norm: 1500 kcal, protein 100g, fat 50g, carbs 150g. "
+"When user describes food or sends photo, calculate nutrition. "
+"Always include this tag in response: "
+"<KBJU>calories,protein,fat,carbs,food description</KBJU> "
+"Example: <KBJU>200,6,4,35,oatmeal 200g</KBJU> "
+"After the tag write a short friendly message in Russian with remaining daily budget."
 )
 
 def parse_kbju(text):
 try:
-start = text.index(”<KBJU>”) + 6
-end = text.index(”</KBJU>”)
-parts = text[start:end].split(”,”)
+start = text.index("<KBJU>") + 6
+end = text.index("</KBJU>")
+parts = text[start:end].split(",")
 return {
-“calories”: float(parts[0]),
-“protein”: float(parts[1]),
-“fat”: float(parts[2]),
-“carbs”: float(parts[3]),
-“food”: parts[4].strip()
+"calories": float(parts[0]),
+"protein": float(parts[1]),
+"fat": float(parts[2]),
+"carbs": float(parts[3]),
+"food": parts[4].strip()
 }
 except Exception:
 return None
@@ -54,23 +54,23 @@ now = datetime.now()
 row = [[
 now.strftime(”%Y-%m-%d”),
 now.strftime(”%H:%M”),
-kbju[“food”],
-kbju[“calories”],
-kbju[“protein”],
-kbju[“fat”],
-kbju[“carbs”]
+kbju["food"],
+kbju["calories"],
+kbju["protein"],
+kbju["fat"],
+kbju["carbs"]
 ]]
 sheets.values().append(
 spreadsheetId=SPREADSHEET_ID,
-range=“A:G”,
-valueInputOption=“RAW”,
-body={“values”: row}
+range="A:G",
+valueInputOption="RAW",
+body={"values": row}
 ).execute()
 
 def get_sheet_rows(sheets):
 result = sheets.values().get(
 spreadsheetId=SPREADSHEET_ID,
-range=“A2:G1000”
+range="A2:G1000"
 ).execute()
 return result.get(“values”, [])
 
